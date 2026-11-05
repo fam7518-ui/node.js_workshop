@@ -1,4 +1,3 @@
-Markdown
 # 🛒 Seller Backend API (Node.js Workshop)
 
 ระบบ RESTful Backend API สำหรับจัดการผู้ใช้งาน ร้านค้า สินค้า และคำสั่งซื้อ พัฒนาด้วย Node.js, Express.js และ MongoDB (Mongoose) ตามโครงสร้างสถาปัตยกรรมแบบ **MVC Pattern (Model-View-Controller)**
