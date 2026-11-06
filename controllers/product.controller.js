@@ -1,7 +1,6 @@
 const { Product, Order} = require('../models/db');
 const sendResponse = require('../utils/response');
 
-// 1. ดึงข้อมูลสินค้าทั้งหมด (ไม่มี -> [] 200 | มีหลายรายการ -> [{...}] 200)
 exports.getProducts = async (req, res) => {
     try {
         const products = await Product.find();
@@ -11,7 +10,6 @@ exports.getProducts = async (req, res) => {
     }
 };
 
-// 2. ดึงข้อมูลสินค้าตาม ID (ไม่มีรายการเดียว -> null 400 | มีรายการเดียว -> {...} 200)
 exports.getProductById = async (req, res) => {
     try {
         const product = await Product.findById(req.params.id);
@@ -24,7 +22,6 @@ exports.getProductById = async (req, res) => {
     }
 };
 
-// 3. เพิ่มสินค้าใหม่ (บันทึกสำเร็จ -> {...} 201)
 exports.createProduct = async (req, res) => {
     try {
         const newProduct = new Product(req.body);
@@ -35,7 +32,6 @@ exports.createProduct = async (req, res) => {
     }
 };
 
-// 4. สั่งซื้อและตัดสต็อก (บันทึกสำเร็จ -> {...} 201)
 exports.createOrder = async (req, res) => {
     try {
         const { order_qty } = req.body;
@@ -52,7 +48,6 @@ exports.createOrder = async (req, res) => {
         product.stock -= order_qty;
         await product.save();
 
-        // เพิ่มการบันทึกประวัติ Order ลง DB
         const newOrder = new Order({ product_id: product._id, qty: order_qty });
         await newOrder.save();
 
@@ -62,7 +57,6 @@ exports.createOrder = async (req, res) => {
     }
 };
 
-// 5. แก้ไขข้อมูลสินค้า (อัปเดตสำเร็จ -> {...} 200 หรือ 201)
 exports.updateProduct = async (req, res) => {
     try {
         const updatedProduct = await Product.findByIdAndUpdate(
@@ -79,7 +73,6 @@ exports.updateProduct = async (req, res) => {
     }
 };
 
-// 6. ลบสินค้า (ลบสำเร็จ -> {... หรือข้อมูลที่ลบ} 200)
 exports.deleteProduct = async (req, res) => {
     try {
         const deletedProduct = await Product.findByIdAndDelete(req.params.id);
@@ -92,7 +85,6 @@ exports.deleteProduct = async (req, res) => {
     }
 };
 
-// 7. เพิ่ม: แสดง Order ทั้งหมดของ Product เฉพาะตัว (ตาม Flowchart)
 exports.getOrdersByProduct = async (req, res) => {
     try {
         const orders = await Order.find({ product_id: req.params.id });
@@ -102,7 +94,6 @@ exports.getOrdersByProduct = async (req, res) => {
     }
 };
 
-// 8. เพิ่ม: แสดง Order ทุกรายการในระบบ (ตาม Flowchart)
 exports.getAllOrders = async (req, res) => {
     try {
         const orders = await Order.find().populate('product_id');
